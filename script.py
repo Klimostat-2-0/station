@@ -12,7 +12,7 @@ def toggleGreen():
     GPIO.output(LED_PIN_GR, GPIO.HIGH)
 
 def toggleYellow():
-    GPIO.output(LED_PIN_GR, GPIO.HIGH)
+    GPIO.output(LED_PIN_YE, GPIO.HIGH)
 
 try:
     toggleGreen()
