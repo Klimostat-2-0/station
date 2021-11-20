@@ -7,9 +7,12 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(LED_PIN_GR, GPIO.OUT)
 
 def toggleGreen():
-    GPIO.output(LED_PIN, GPIO.HIGH)
+    GPIO.output(LED_PIN_GR, GPIO.HIGH)
 
+try:
+    toggleGreen()
+    time.sleep(10)
+except KeyboardInterrupt:
+    GPIO.cleanup()
 
-toggleGreen()
-time.sleep(1000)
 GPIO.cleanup()
