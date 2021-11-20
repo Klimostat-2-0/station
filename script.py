@@ -43,7 +43,7 @@ try:
     }
     r = requests.post(
         url = URL,
-        params = req
+        data = req
     )
 
     print(r)
