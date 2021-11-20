@@ -32,12 +32,14 @@ def getTempHum():
 try:
     time = str(datetime.now())
     humidity, temperature = getTempHum()
-    co2 = getCO2().co2
+    co2 = getCO2()['co2']
+    station = open('.station', 'r')
     req = {
         "timestamp": time,
         "temperature": temperature,
         "humidity": humidity,
-        "co2": co2
+        "co2": co2,
+        "station": station.readline()
     }
 
     toggleGreen()
