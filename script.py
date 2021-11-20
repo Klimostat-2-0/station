@@ -30,9 +30,9 @@ def getTempHum():
     return _humid, _temper
 
 try:
-    time = datetime.now()
+    time = str(datetime.now())
     humidity, temperature = getTempHum()
-    co2 = getCO2()
+    co2 = getCO2().co2
     req = {
         "timestamp": time,
         "temperature": temperature,
