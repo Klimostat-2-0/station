@@ -1,7 +1,9 @@
 import RPi.GPIO as GPIO
 import mh_z19
 import time
+from datetime import datetime
 import Adafruit_DHT
+import json
 
 
 LED_PIN_GR = 7
@@ -26,11 +28,21 @@ def getCO2():
 def getTempHum():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
     return _humid, _temper
+
 try:
+    time = datetime.now()
+    humidity, temperature = getTempHum()
+    co2 = getCO2()
+    req = {
+        "timestamp": time,
+        "temperature": temperature,
+        "humidity": humidity,
+        "co2": co2
+    }
+
     toggleGreen()
     toggleYellow()
-    getCO2()
-    getTempHum()
+    print(req)
 except KeyboardInterrupt:
     GPIO.cleanup()
 
