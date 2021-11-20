@@ -4,7 +4,7 @@ from datetime import datetime
 import Adafruit_DHT
 import requests
 
-URL = open('.url', 'r').readline()
+URL = open('.url', 'r').readline().strip()
 
 LED_PIN_GR = 7
 LED_PIN_YE = 12
@@ -33,7 +33,7 @@ try:
     time = str(datetime.now())
     humidity, temperature = getTempHum()
     co2 = getCO2()['co2']
-    station = open('.station', 'r').readline()
+    station = open('.station', 'r').readline().strip()
     req = {
         "timestamp": time,
         "temperature": temperature,
