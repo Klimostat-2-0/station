@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO
 import mh_z19
-import time
 from datetime import datetime
 import Adafruit_DHT
-import json
+import requests
 
+URL = open('.url', 'r').readline()
 
 LED_PIN_GR = 7
 LED_PIN_YE = 12
@@ -33,18 +33,26 @@ try:
     time = str(datetime.now())
     humidity, temperature = getTempHum()
     co2 = getCO2()['co2']
-    station = open('.station', 'r')
+    station = open('.station', 'r').readline()
     req = {
         "timestamp": time,
         "temperature": temperature,
         "humidity": humidity,
         "co2": co2,
-        "station": station.readline()
+        "station": station
     }
+    r = requests.post(
+        url = URL,
+        params = req
+    )
+
+    print(r)
 
     toggleGreen()
     toggleYellow()
-    print(req)
+
+
+
 except KeyboardInterrupt:
     GPIO.cleanup()
 
