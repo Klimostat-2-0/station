@@ -66,9 +66,14 @@ try:
         print("Can't connect!")
     else:
         with open('cache.json') as f:
-            for jsonObj in f:
-                studentDict = json.loads(jsonObj)
-                studentsList.append(studentDict)
+            for jsonLine in f:
+                obj = json.loads(jsonLine)
+                r = requests.post(
+                    url=URL,
+                    data=obj
+                )
+            f.close()
+            os.remove('cache.json')
         r = requests.post(
             url=URL,
             data=req
