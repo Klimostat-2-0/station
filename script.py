@@ -5,6 +5,7 @@ import Adafruit_DHT
 import requests
 import json
 import os
+from datetime import datetime
 
 URL = open('.url', 'r').readline().strip()
 
@@ -43,6 +44,13 @@ def getTempHum():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
     return _humid, _temper
 
+def sendData(data):
+    #TODO: Make request to Azure IOT
+    r = requests.post(
+        url=URL,
+        data=data
+    )
+
 
 try:
     time = str(datetime.now())
@@ -58,32 +66,21 @@ try:
     }
 
     if not is_cnx_active(1):
+        open("klimostat.log", "a").write(f"Entry {datetime.now()} : Couldn't reach API")
         json_object = json.dumps(req, indent=0).replace("\n", "") + "\n"
 
         with open("cache.json", "a") as outfile:
             outfile.write(json_object)
-        outfile.close()
-        print("Can't connect!")
     else:
         with open('cache.json') as f:
             for jsonLine in f:
                 obj = json.loads(jsonLine)
-                r = requests.post(
-                    url=URL,
-                    data=obj
-                )
-            f.close()
+                sendData(obj)
             os.remove('cache.json')
-        r = requests.post(
-            url=URL,
-            data=req
-        )
-        print("Connected:", r)
+        sendData(req)
 
     toggleGreen()
     toggleYellow()
-
-
 
 except KeyboardInterrupt:
     GPIO.cleanup()
