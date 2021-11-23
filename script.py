@@ -16,6 +16,13 @@ GPIO.setup(LED_PIN_GR, GPIO.OUT)
 GPIO.setup(LED_PIN_YE, GPIO.OUT)
 DHTSensor = Adafruit_DHT.DHT11
 
+def is_cnx_active(timeout):
+    try:
+        requests.head(URL, timeout=timeout)
+        return True
+    except requests.ConnectionError:
+        return False
+
 def toggleGreen():
     GPIO.output(LED_PIN_GR, GPIO.HIGH)
 
@@ -30,6 +37,7 @@ def getTempHum():
     return _humid, _temper
 
 try:
+
     time = str(datetime.now())
     humidity, temperature = getTempHum()
     co2 = getCO2()['co2']
@@ -41,12 +49,15 @@ try:
         "co2": co2,
         "station": station
     }
-    r = requests.post(
-        url = URL,
-        data = req
-    )
 
-    print(r)
+    if not is_cnx_active(1):
+        print("Can't connect!")
+    else:
+        r = requests.post(
+            url=URL,
+            data=req
+        )
+        print("Connected:", r)
 
     toggleGreen()
     toggleYellow()
