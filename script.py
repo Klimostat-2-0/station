@@ -21,9 +21,6 @@ GPIO.setup(LED_PIN_GR, GPIO.OUT)
 GPIO.setup(LED_PIN_YE, GPIO.OUT)
 DHTSensor = Adafruit_DHT.DHT11
 
-STATE_GREEN = False
-STATE_YELLOW = False
-
 
 def is_cnx_active(timeout):
     try:
@@ -33,24 +30,20 @@ def is_cnx_active(timeout):
         return False
 
 
-def toggle_green():
-    global STATE_GREEN
-    if STATE_GREEN:
-        STATE_GREEN = False
-        GPIO.output(LED_PIN_GR, GPIO.LOW)
-    else:
-        STATE_GREEN = True
-        GPIO.output(LED_PIN_GR, GPIO.HIGH)
+def yellow_on():
+    GPIO.output(LED_PIN_YE, GPIO.HIGH)
 
 
-def toggle_yellow():
-    global STATE_YELLOW
-    if STATE_YELLOW:
-        STATE_YELLOW = False
-        GPIO.output(LED_PIN_YE, GPIO.LOW)
-    else:
-        STATE_YELLOW = True
-        GPIO.output(LED_PIN_YE, GPIO.HIGH)
+def yellow_off():
+    GPIO.output(LED_PIN_YE, GPIO.LOW)
+
+
+def green_on():
+    GPIO.output(LED_PIN_GR, GPIO.HIGH)
+
+
+def green_off():
+    GPIO.output(LED_PIN_GR, GPIO.LOW)
 
 
 def get_co2():
@@ -98,17 +91,11 @@ def post_cache():
 def handle_co2_value(value):
     global STATE_YELLOW, STATE_GREEN
     if value >= int(open('.limit', 'r').read().strip()):
-        if STATE_GREEN:
-            toggle_green()
-            toggle_yellow()
-        else:
-            toggle_yellow()
+        green_off()
+        yellow_on()
     else:
-        if STATE_YELLOW:
-            toggle_yellow()
-            toggle_green()
-        else:
-            toggle_green()
+        yellow_off()
+        green_on()
 
 
 def make_measurement():
