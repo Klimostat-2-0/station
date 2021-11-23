@@ -126,10 +126,12 @@ def make_measurement():
     else:
         post_cache()
         send_data(req)
+    return co2
 
 
 try:
     collect_station_limit()
-    make_measurement()
+    co2 = make_measurement()
+    handle_co2_value(co2)
 except KeyboardInterrupt:
     GPIO.cleanup()
