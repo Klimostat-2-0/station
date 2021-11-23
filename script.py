@@ -101,9 +101,14 @@ def handle_co2_value(value):
         if STATE_GREEN:
             toggle_green()
             toggle_yellow()
+        else:
+            toggle_yellow()
     else:
-        toggle_yellow()
-        toggle_green()
+        if STATE_YELLOW:
+            toggle_yellow()
+            toggle_green()
+        else:
+            toggle_green()
 
 
 def make_measurement():
