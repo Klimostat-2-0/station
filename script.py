@@ -72,6 +72,14 @@ def post_cache():
             os.remove(PATH + 'cache.json')
 
 
+def christmas():
+    for i in range(100):
+        toggle_green()
+        toggle_green()
+        toggle_yellow()
+        toggle_yellow()
+
+
 def make_measurement():
     time = str(datetime.now())
     humidity, temperature = get_temperature_humidity()
@@ -95,6 +103,7 @@ def make_measurement():
 
 
 try:
+    christmas()
     make_measurement()
 except KeyboardInterrupt:
     GPIO.cleanup()
