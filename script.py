@@ -74,7 +74,7 @@ def collect_station_limit():
     r = requests.get(
         url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
     )
-    print(r)
+    print(r.content['co2_limit'])
 
 
 def write_to_log(line):
@@ -118,7 +118,7 @@ def make_measurement():
 
 
 try:
-    print(collect_station_limit())
+    collect_station_limit()
     make_measurement()
 except KeyboardInterrupt:
     GPIO.cleanup()
