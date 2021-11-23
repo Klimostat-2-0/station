@@ -70,6 +70,13 @@ def send_data(data):
     )
 
 
+def collect_station_limit():
+    r = requests.get(
+        url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
+    )
+    print(r)
+
+
 def write_to_log(line):
     open(PATH + 'klimostat.log', 'a').write(f"{datetime.now()} - {line} \n")
 
@@ -111,6 +118,7 @@ def make_measurement():
 
 
 try:
+    print(collect_station_limit())
     make_measurement()
 except KeyboardInterrupt:
     GPIO.cleanup()
