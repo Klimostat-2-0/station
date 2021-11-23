@@ -74,7 +74,7 @@ def collect_station_limit():
     r = requests.get(
         url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
     )
-    open(PATH + '.limit', 'w').write(json.loads(r.content)['co2_limit'])
+    open(PATH + '.limit', 'w').write(str(json.loads(r.content)['co2_limit']))
 
 
 def write_to_log(line):
