@@ -58,8 +58,7 @@ try:
     }
 
     if not is_cnx_active(1):
-        #json_object = json.dumps(req, indent=4)
-        json_object = json.dumps(req, indent=0).replace("\n", "")
+        json_object = json.dumps(req, indent=0).replace("\n", "") + "\n"
 
         with open("cache.json", "a") as outfile:
             outfile.write(json_object)
