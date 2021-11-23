@@ -6,6 +6,7 @@ import requests
 import json
 import os
 from datetime import datetime
+import time
 
 PATH = "/home/pi/station/"
 URL = open(PATH + '.url', 'r').readline().strip()
@@ -33,16 +34,22 @@ def is_cnx_active(timeout):
 
 
 def toggle_green():
+    global STATE_GREEN
     if STATE_GREEN:
+        STATE_GREEN = False
         GPIO.output(LED_PIN_GR, GPIO.LOW)
     else:
+        STATE_GREEN = True
         GPIO.output(LED_PIN_GR, GPIO.HIGH)
 
 
 def toggle_yellow():
+    global STATE_YELLOW
     if STATE_YELLOW:
+        STATE_YELLOW = False
         GPIO.output(LED_PIN_YE, GPIO.LOW)
     else:
+        STATE_YELLOW = True
         GPIO.output(LED_PIN_YE, GPIO.HIGH)
 
 
@@ -84,8 +91,10 @@ def post_cache():
 def christmas():
     for i in range(100):
         toggle_green()
+        time.sleep(1)
         toggle_green()
         toggle_yellow()
+        time.sleep(1)
         toggle_yellow()
 
 
