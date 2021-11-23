@@ -45,15 +45,16 @@ def getTempHum():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
     return _humid, _temper
 
+
 def sendData(data):
-    #TODO: Make request to Azure IOT
+    # TODO: Make request to Azure IOT
     r = requests.post(
         url=URL,
         data=data
     )
 
 
-try:
+def make_measurement():
     time = str(datetime.now())
     humidity, temperature = getTempHum()
     co2 = getCO2()['co2']
@@ -84,6 +85,9 @@ try:
     toggleGreen()
     toggleYellow()
 
+
+try:
+    make_measurement()
 except KeyboardInterrupt:
     GPIO.cleanup()
 
