@@ -3,6 +3,8 @@ import mh_z19
 from datetime import datetime
 import Adafruit_DHT
 import requests
+import json
+import os
 
 URL = open('.url', 'r').readline().strip()
 
@@ -37,7 +39,6 @@ def getTempHum():
     return _humid, _temper
 
 try:
-
     time = str(datetime.now())
     humidity, temperature = getTempHum()
     co2 = getCO2()['co2']
@@ -51,6 +52,12 @@ try:
     }
 
     if not is_cnx_active(1):
+        json_object = json.dumps(req, indent=4)
+
+        os.path.exists("cache.json")
+
+        with open("cache.json", "w") as outfile:
+            outfile.write(json_object)
         print("Can't connect!")
     else:
         r = requests.post(
