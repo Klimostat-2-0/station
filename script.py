@@ -72,11 +72,12 @@ try:
         with open("cache.json", "a") as outfile:
             outfile.write(json_object)
     else:
-        with open('cache.json') as f:
-            for jsonLine in f:
-                obj = json.loads(jsonLine)
-                sendData(obj)
-            os.remove('cache.json')
+        if os.path.exists('cache.json'):
+            with open('cache.json') as f:
+                for jsonLine in f:
+                    obj = json.loads(jsonLine)
+                    sendData(obj)
+                os.remove('cache.json')
         sendData(req)
 
     toggleGreen()
