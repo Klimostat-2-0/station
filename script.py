@@ -54,9 +54,13 @@ try:
     if not is_cnx_active(1):
         json_object = json.dumps(req, indent=4)
 
-        os.path.exists("cache.json")
+        if os.path.exists("cache.json"):
+            content = open("cache.json", "r").read()
+
 
         with open("cache.json", "w") as outfile:
+            if content is not None:
+                outfile.write(content + "\n")
             outfile.write(json_object)
         print("Can't connect!")
     else:
