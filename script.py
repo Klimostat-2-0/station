@@ -15,6 +15,7 @@ LED_PIN_YE = 12
 CO2_PIN = 14
 SENSE_PIN = 21
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(LED_PIN_GR, GPIO.OUT)
 GPIO.setup(LED_PIN_YE, GPIO.OUT)
