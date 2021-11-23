@@ -58,9 +58,7 @@ try:
             content = open("cache.json", "r").read()
 
 
-        with open("cache.json", "w") as outfile:
-            if content is not None:
-                outfile.write(content + "\n")
+        with open("cache.json", "a") as outfile:
             outfile.write(json_object)
         print("Can't connect!")
     else:
