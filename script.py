@@ -95,6 +95,17 @@ def post_cache():
             os.remove(PATH + 'cache.json')
 
 
+def handle_co2_value(value):
+    global STATE_YELLOW, STATE_GREEN
+    if value >= int(open('.limit', 'r').read().strip()):
+        if STATE_GREEN:
+            toggle_green()
+            toggle_yellow()
+    else:
+        toggle_yellow()
+        toggle_green()
+
+
 def make_measurement():
     time = str(datetime.now())
     humidity, temperature = get_temperature_humidity()
