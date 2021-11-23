@@ -6,7 +6,6 @@ import requests
 import json
 import os
 from datetime import datetime
-import time
 
 PATH = "/home/pi/station/"
 URL = open(PATH + '.url', 'r').readline().strip()
@@ -27,7 +26,7 @@ STATE_YELLOW = False
 
 def is_cnx_active(timeout):
     try:
-        requests.head(URL, timeout=timeout)
+        requests.head(URL + 'station', timeout=timeout)
         return True
     except requests.ConnectionError:
         return False
@@ -65,7 +64,7 @@ def get_temperature_humidity():
 def send_data(data):
     # TODO: Make request to Azure IOT
     r = requests.post(
-        url=URL,
+        url=URL + 'measurement',
         data=data
     )
 
@@ -86,16 +85,6 @@ def post_cache():
                 obj = json.loads(jsonLine)
                 send_data(obj)
             os.remove(PATH + 'cache.json')
-
-
-def christmas():
-    for i in range(100):
-        toggle_green()
-        time.sleep(1)
-        toggle_green()
-        toggle_yellow()
-        time.sleep(1)
-        toggle_yellow()
 
 
 def make_measurement():
@@ -121,9 +110,6 @@ def make_measurement():
 
 
 try:
-    christmas()
     make_measurement()
 except KeyboardInterrupt:
     GPIO.cleanup()
-
-GPIO.cleanup()
