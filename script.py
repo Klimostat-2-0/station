@@ -18,6 +18,7 @@ GPIO.setup(LED_PIN_GR, GPIO.OUT)
 GPIO.setup(LED_PIN_YE, GPIO.OUT)
 DHTSensor = Adafruit_DHT.DHT11
 
+
 def is_cnx_active(timeout):
     try:
         requests.head(URL, timeout=timeout)
@@ -25,18 +26,23 @@ def is_cnx_active(timeout):
     except requests.ConnectionError:
         return False
 
+
 def toggleGreen():
     GPIO.output(LED_PIN_GR, GPIO.HIGH)
+
 
 def toggleYellow():
     GPIO.output(LED_PIN_YE, GPIO.HIGH)
 
+
 def getCO2():
     return mh_z19.read_from_pwm(CO2_PIN)
+
 
 def getTempHum():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
     return _humid, _temper
+
 
 try:
     time = str(datetime.now())
@@ -52,16 +58,18 @@ try:
     }
 
     if not is_cnx_active(1):
-        json_object = json.dumps(req, indent=4)
-
-        if os.path.exists("cache.json"):
-            content = open("cache.json", "r").read()
-
+        #json_object = json.dumps(req, indent=4)
+        json_object = json.dumps(req, indent=0).replace("\n", "")
 
         with open("cache.json", "a") as outfile:
             outfile.write(json_object)
+        outfile.close()
         print("Can't connect!")
     else:
+        with open('cache.json') as f:
+            for jsonObj in f:
+                studentDict = json.loads(jsonObj)
+                studentsList.append(studentDict)
         r = requests.post(
             url=URL,
             data=req
