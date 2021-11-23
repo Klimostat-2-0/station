@@ -29,24 +29,24 @@ def is_cnx_active(timeout):
         return False
 
 
-def toggleGreen():
+def toggle_green():
     GPIO.output(LED_PIN_GR, GPIO.HIGH)
 
 
-def toggleYellow():
+def toggle_yellow():
     GPIO.output(LED_PIN_YE, GPIO.HIGH)
 
 
-def getCO2():
+def get_co2():
     return mh_z19.read_from_pwm(CO2_PIN)
 
 
-def getTempHum():
+def get_temperature_humidity():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
     return _humid, _temper
 
 
-def sendData(data):
+def send_data(data):
     # TODO: Make request to Azure IOT
     r = requests.post(
         url=URL,
@@ -56,8 +56,8 @@ def sendData(data):
 
 def make_measurement():
     time = str(datetime.now())
-    humidity, temperature = getTempHum()
-    co2 = getCO2()['co2']
+    humidity, temperature = get_temperature_humidity()
+    co2 = get_co2()['co2']
     station = open(PATH + '.station', 'r').readline().strip()
     req = {
         "timestamp": time,
@@ -78,12 +78,12 @@ def make_measurement():
             with open(PATH + 'cache.json') as f:
                 for jsonLine in f:
                     obj = json.loads(jsonLine)
-                    sendData(obj)
+                    send_data(obj)
                 os.remove(PATH + 'cache.json')
-        sendData(req)
+        send_data(req)
 
-    toggleGreen()
-    toggleYellow()
+    toggle_green()
+    toggle_yellow()
 
 
 try:
