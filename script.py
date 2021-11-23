@@ -54,6 +54,24 @@ def send_data(data):
     )
 
 
+def write_to_log(line):
+    open(PATH + 'klimostat.log', 'a').write(f"{datetime.now()} - {line} \n")
+
+
+def write_to_cache(obj):
+    with open(PATH + 'cache.json', 'a') as outfile:
+        outfile.write(obj)
+
+
+def post_cache():
+    if os.path.exists(PATH + 'cache.json'):
+        with open(PATH + 'cache.json') as f:
+            for jsonLine in f:
+                obj = json.loads(jsonLine)
+                send_data(obj)
+            os.remove(PATH + 'cache.json')
+
+
 def make_measurement():
     time = str(datetime.now())
     humidity, temperature = get_temperature_humidity()
@@ -68,22 +86,12 @@ def make_measurement():
     }
 
     if not is_cnx_active(1):
-        open(PATH + 'klimostat.log', 'a').write(f"{datetime.now()} - Couldn't reach API \n")
+        write_to_log("Couldn't reach API")
         json_object = json.dumps(req, indent=0).replace("\n", "") + "\n"
-
-        with open(PATH + 'cache.json', 'a') as outfile:
-            outfile.write(json_object)
+        write_to_cache(json_object)
     else:
-        if os.path.exists(PATH + 'cache.json'):
-            with open(PATH + 'cache.json') as f:
-                for jsonLine in f:
-                    obj = json.loads(jsonLine)
-                    send_data(obj)
-                os.remove(PATH + 'cache.json')
+        post_cache()
         send_data(req)
-
-    toggle_green()
-    toggle_yellow()
 
 
 try:
