@@ -1,3 +1,4 @@
+from typing import ParamSpec
 import RPi.GPIO as GPIO
 import mh_z19
 from datetime import datetime
@@ -9,11 +10,11 @@ from datetime import datetime
 from azure.iot.device import Message
 from azure.iot.device.aio import IoTHubDeviceClient
  
- # Used to connect the device to the IOT Hub, insert the IOT "Primary connection string" of the desirable device
-CONNECTION_STRING = ""
 
 PATH = "/home/pi/station/"
 URL = open(PATH + '.url', 'r').readline().strip()
+ # Used to connect the device to the IOT Hub
+CONNECTION_STRING = open(PATH + '.conKey', 'r').readline().strip()
 
 # Create instance of the device client
 client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
