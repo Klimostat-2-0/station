@@ -63,11 +63,11 @@ def get_temperature_humidity():
     return _humid, _temper
 
 
-def send_data(data):
+async def send_data(data):
     try:
         # TODO: Make request to Azure IOT
         message = Message(data)
-        client.send_message(message)
+        await client.send_message(message)
 
         r = requests.post(
             url = URL + 'measurement',
@@ -132,7 +132,7 @@ def make_measurement():
         write_to_cache(json_object)
     else:
         post_cache()
-        send_data(req)
+        asyncio.run(send_data(req))
     return co2
 
 
