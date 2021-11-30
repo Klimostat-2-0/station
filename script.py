@@ -90,7 +90,7 @@ def post_cache():
 
 def handle_co2_value(value):
     global STATE_YELLOW, STATE_GREEN
-    if value >= int(open('.limit', 'r').read().strip()):
+    if value >= int(open(PATH + '.limit', 'r').read().strip()):
         green_off()
         yellow_on()
     else:
