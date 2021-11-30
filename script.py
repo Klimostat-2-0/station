@@ -6,9 +6,17 @@ import requests
 import json
 import os
 from datetime import datetime
+from azure.iot.device import Message
+from azure.iot.device.aio import IoTHubDeviceClient
+ 
+ # Used to connect the device to the IOT Hub, insert the IOT "Primary connection string" of the desirable device
+CONNECTION_STRING = ""
 
 PATH = "/home/pi/station/"
 URL = open(PATH + '.url', 'r').readline().strip()
+
+# Create instance of the device client
+client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
 
 LED_PIN_GR = 7
 LED_PIN_YE = 12
@@ -56,11 +64,18 @@ def get_temperature_humidity():
 
 
 def send_data(data):
-    # TODO: Make request to Azure IOT
-    r = requests.post(
-        url=URL + 'measurement',
-        data=data
-    )
+    try:
+        # TODO: Make request to Azure IOT
+        message = Message(data)
+        client.send_message(message)
+
+        r = requests.post(
+            url = URL + 'measurement',
+            data = data
+        )
+
+    except Exception as error:
+        print(error.args[0])
 
 
 def collect_station_limit():
