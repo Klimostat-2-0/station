@@ -1,4 +1,3 @@
-from typing import ParamSpec
 import RPi.GPIO as GPIO
 import mh_z19
 from datetime import datetime
