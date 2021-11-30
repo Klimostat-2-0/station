@@ -67,7 +67,7 @@ def get_temperature_humidity():
 async def send_data(data):
     try:
         # TODO: Make request to Azure IOT
-        message = Message(data)
+        message = Message(str(data))
         await client.send_message(message)
 
         r = requests.post(
