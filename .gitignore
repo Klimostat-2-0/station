@@ -5,6 +5,7 @@
 # Klimostat specific
 .url
 .station
+.conKey
 cache.json
 klimostat.log
 
