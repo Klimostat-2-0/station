@@ -1,7 +1,6 @@
 import asyncio
 import RPi.GPIO as GPIO
 import mh_z19
-from datetime import datetime
 import Adafruit_DHT
 import requests
 import json
@@ -115,7 +114,7 @@ def handle_co2_value(value):
 
 
 def make_measurement():
-    time = str(datetime.now())
+    time = str(datetime.utcnow()) + 'Z'
     humidity, temperature = get_temperature_humidity()
     co2 = get_co2()['co2']
     station = open(PATH + '.station', 'r').readline().strip()
