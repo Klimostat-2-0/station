@@ -8,11 +8,10 @@ import os
 from datetime import datetime
 from azure.iot.device import Message
 from azure.iot.device.aio import IoTHubDeviceClient
- 
 
 PATH = "/home/pi/station/"
 URL = open(PATH + '.url', 'r').readline().strip()
- # Used to connect the device to the IOT Hub
+# Used to connect the device to the IOT Hub
 CONNECTION_STRING = open(PATH + '.conKey', 'r').readline().strip()
 
 # Create instance of the device client
@@ -70,8 +69,8 @@ async def send_data(data):
         await client.send_message(message)
 
         r = requests.post(
-            url = URL + 'measurement',
-            data = data
+            url=URL + 'measurement',
+            data=data
         )
 
     except Exception as error:
@@ -79,10 +78,13 @@ async def send_data(data):
 
 
 def collect_station_limit():
-    r = requests.get(
-        url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
-    )
-    open(PATH + '.limit', 'w').write(str(json.loads(r.content)['co2_limit']))
+    try:
+        r = requests.get(
+            url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
+        )
+        open(PATH + '.limit', 'w').write(str(json.loads(r.content)['co2_limit']))
+    except:
+        write_to_log("Could not get limit")
 
 
 def write_to_log(line):
