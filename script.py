@@ -81,6 +81,7 @@ def collect_station_limit():
             url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
         )
         open(PATH + '.limit', 'w').write(str(json.loads(r.content)['co2_limit']))
+        open(PATH + '.reset', 'w').write(str(json.loads(r.content)['co2_reset']))
     except:
         write_to_log("Could not get limit")
 
@@ -108,7 +109,7 @@ def handle_co2_value(value):
     if value >= int(open(PATH + '.limit', 'r').read().strip()):
         green_off()
         yellow_on()
-    else:
+    if value <= int(open(PATH + '.reset', 'r').read().strip()):
         yellow_off()
         green_on()
 
