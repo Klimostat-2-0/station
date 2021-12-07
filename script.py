@@ -5,11 +5,15 @@ import requests
 import json
 import os
 from datetime import datetime
+from azure.iot.device import Message
+from azure.iot.device.aio import IoTHubDeviceClient
 
 PATH = "/home/pi/station/"
 URL = open(PATH + '.url', 'r').readline().strip()
 # Used to connect the device to the IOT Hub
 CONNECTION_STRING = open(PATH + '.conKey', 'r').readline().strip()
+# Create instance of the device client
+client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
 
 LED_PIN_GR = 7
 LED_PIN_YE = 12
@@ -58,6 +62,11 @@ def get_temperature_humidity():
 
 def send_data(data):
     try:
+        # TODO: Make request to Azure IOT
+        message = Message(data)
+        client.send_message(message)
+
+        # API request
         r = requests.post(
             url=URL + 'measurement',
             data=data
