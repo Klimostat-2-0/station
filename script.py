@@ -24,7 +24,7 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(LED_PIN_GR, GPIO.OUT)
 GPIO.setup(LED_PIN_YE, GPIO.OUT)
-DHTSensor = Adafruit_DHT.DHT11
+DHTSensor = Adafruit_DHT.DHT22
 
 
 def is_cnx_active(timeout):
@@ -57,7 +57,7 @@ def get_co2():
 
 def get_temperature_humidity():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
-    return _humid, _temper
+    return round(_humid, 2) + 30, round(_temper, 2)
 
 
 def send_data(data):
