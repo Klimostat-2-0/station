@@ -99,8 +99,11 @@ def post_cache():
     if os.path.exists(PATH + 'cache.json'):
         with open(PATH + 'cache.json') as f:
             for jsonLine in f:
-                obj = json.loads(jsonLine)
-                send_data(obj)
+                try:
+                    obj = json.loads(jsonLine)
+                    send_data(obj)
+                except JSONDecodeError:
+                    write_to_log('Cache line could not be parsed: ' + jsonLine)
             os.remove(PATH + 'cache.json')
 
 
