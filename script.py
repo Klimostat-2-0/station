@@ -63,8 +63,9 @@ def get_temperature_humidity():
 def send_data(data):
     try:
         # TODO: Make request to Azure IOT
-        message = Message(data)
-        client.send_message(message)
+        # message = Message(data)
+        # client.send_message(message)
+        # removed client msg, because of error
 
         # API request
         r = requests.post(
@@ -115,6 +116,9 @@ def handle_co2_value(value):
     if value <= int(open(PATH + '.reset', 'r').read().strip()):
         yellow_off()
         green_on()
+    if not GPIO.input(LED_PIN_GR) and not GPIO.input(LED_PIN_YE):
+        green_off()
+        yellow_on()
 
 
 def make_measurement():
