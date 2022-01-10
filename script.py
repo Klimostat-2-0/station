@@ -78,13 +78,16 @@ def send_data(data):
 
 def collect_station_limit():
     try:
-        r = requests.get(
-            url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
-        )
-        open(PATH + '.limit', 'w').write(str(json.loads(r.content)['co2_limit']))
-        open(PATH + '.reset', 'w').write(str(json.loads(r.content)['co2_reset']))
+        if is_cnx_active(1):
+            r = requests.get(
+                url=URL + f"station/limit/{open(PATH + '.station', 'r').readline().strip()}"
+            )
+            open(PATH + '.limit', 'w').write(str(json.loads(r.content)['co2_limit']))
+            open(PATH + '.reset', 'w').write(str(json.loads(r.content)['co2_reset']))
+        else:
+            write_to_log("Could not get limit - cnx down")
     except:
-        write_to_log("Could not get limit")
+        write_to_log("Could not get limit - exception")
 
 
 def write_to_log(line):
@@ -135,7 +138,7 @@ def make_measurement():
     }
 
     if not is_cnx_active(1):
-        write_to_log("Couldn't reach API")
+        write_to_log("Couldn't reach API - cnx down");
         json_object = json.dumps(req, indent=0).replace("\n", "") + "\n"
         write_to_cache(json_object)
     else:
