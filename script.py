@@ -57,8 +57,6 @@ def get_co2():
 
 def get_temperature_humidity():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
-    print(_humid)
-    print(_temper)
     return round(_humid, 2), round(_temper, 2)
 
 
@@ -110,7 +108,7 @@ def post_cache():
                     send_data(obj)
                 except JSONDecodeError:
                     write_to_log('Cache line could not be parsed: ' + jsonLine)
-            os.remove(PATH + 'cache.json')
+        os.remove(PATH + 'cache.json')
 
 
 def handle_co2_value(value):
