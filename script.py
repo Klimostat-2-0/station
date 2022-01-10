@@ -57,6 +57,8 @@ def get_co2():
 
 def get_temperature_humidity():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
+    print(_humid)
+    print(_temper)
     return round(_humid, 2), round(_temper, 2)
 
 
