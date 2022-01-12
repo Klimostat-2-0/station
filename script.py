@@ -62,6 +62,7 @@ def get_temperature_humidity():
 
 def send_data(data):
     try:
+        client.connect()
         message = Message(data)
         message.content_type = "application/json"
         client.send_message(message)
