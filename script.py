@@ -76,7 +76,7 @@ def send_data(data):
         #message = Message(data)
         #message.content_type = "application/json"
         #client.send_message(message)
-        asyncio.run(send_telemetry)
+        asyncio.run(send_telemetry(data, client))
 
         # API request
         r = requests.post(
