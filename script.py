@@ -72,11 +72,12 @@ async def send_telemetry(data, client):
 
 
 def send_data(data):
+    loop = asyncio.get_event_loop()
     try:
         #message = Message(data)
         #message.content_type = "application/json"
         #client.send_message(message)
-        asyncio.run(send_telemetry(data, client))
+        loop.run_until_complete(send_telemetry(data, client))
 
         # API request
         r = requests.post(
