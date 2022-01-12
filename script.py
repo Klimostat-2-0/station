@@ -1,3 +1,4 @@
+import asyncio
 import RPi.GPIO as GPIO
 import mh_z19
 import Adafruit_DHT
@@ -59,13 +60,23 @@ def get_temperature_humidity():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
     return round(_humid, 2), round(_temper, 2)
 
+async def send_telemetry(data, client):
+    await client.connect()
+    try:
+        msg = Message(data)
+        msg.content_type = "application/json"
+        await client.send_message(msg)
+        
+    except Exception as error:
+        print(error.args[0])
+
 
 def send_data(data):
     try:
-        client.connect()
-        message = Message(data)
-        message.content_type = "application/json"
-        client.send_message(message)
+        #message = Message(data)
+        #message.content_type = "application/json"
+        #client.send_message(message)
+        asyncio.run(send_telemetry)
 
         # API request
         r = requests.post(
