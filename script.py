@@ -66,7 +66,7 @@ async def send_telemetry(data, client):
         msg = Message(data)
         msg.content_type = "application/json"
         await client.send_message(msg)
-        
+        await client.disconnect()
     except Exception as error:
         print(error.args[0])
 
