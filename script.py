@@ -1,4 +1,6 @@
 import asyncio
+
+from azure.iot.device.iothub.models import message
 import RPi.GPIO as GPIO
 import mh_z19
 import Adafruit_DHT
@@ -63,10 +65,19 @@ def get_temperature_humidity():
 async def send_telemetry(data, client):
     await client.connect()
     try:
-        msg = Message(data)
-        msg.content_type = "application/json"
-        await client.send_message(msg)
+        message = Message(data)
+        message.content_type = "application/json"
+
+        if client.connected:
+            await client.send_message(message)
+        else:
+            await client.disconnect()
+            client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
+            await client.connect()
+            await client.send_message(message)
+
         await client.disconnect()
+
     except Exception as error:
         print(error.args[0])
 
