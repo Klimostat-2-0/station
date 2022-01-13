@@ -81,7 +81,7 @@ async def send_telemetry(data, client):
             await client.send_message(message)
 
     except Exception as error:
-        pass
+        print(error.args[0])
     finally:
         await client.disconnect()
 
