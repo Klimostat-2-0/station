@@ -73,17 +73,24 @@ async def send_telemetry(data, client):
         message.content_type = "application/json"
 
         if client.connected:
+            print(f"Sending message: {message}")
             await client.send_message(message)
+            print("Message successfully sent!")
         else:
             await client.disconnect()
-            client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
+            client = IoTHubDeviceClient.create_from_connection_string(
+                CONNECTION_STRING)
+            print("Disconnected client.")
             await client.connect()
+            print(f"Sending message: {message}")
             await client.send_message(message)
+            print("Message successfully sent!")
 
     except Exception as error:
         print(error.args[0])
     finally:
         await client.disconnect()
+        print("Disconnected client.")
 
 
 def send_data(data):
