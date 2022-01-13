@@ -67,7 +67,7 @@ def get_temperature_humidity():
 async def send_telemetry(data, client):
     await client.connect()
     try:
-        payload = PAYLOAD.format(timestamp="2022-01-13T08:55:06.114Z", temperature=25, humidity=50, co2=700, station="61de29728c251a49e57635d3")
+        payload = PAYLOAD.format(timestamp=data.get("timestamp"), temperature=data.get("temperature"), humidity=data.get("humidity"), co2=data.get("co2"), station=data.get("station"))
         message = Message(payload)
         #message = Message(data)
         message.content_type = "application/json"
