@@ -17,7 +17,7 @@ URL = open(PATH + '.url', 'r').readline().strip()
 CONNECTION_STRING = open(PATH + '.conKey', 'r').readline().strip()
 # Create instance of the device client
 client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
-#PAYLOAD = '{{"timestamp": {timestamp}, "temperature": {temperature}, "humidity": {humidity}, "co2": {co2}, "station": {station}, "id": {id}}}'
+PAYLOAD = '{{"timestamp": {timestamp}, "temperature": {temperature}, "humidity": {humidity}, "co2": {co2}, "station": {station}}}'
 
 LED_PIN_GR = 7
 LED_PIN_YE = 12
@@ -67,9 +67,9 @@ def get_temperature_humidity():
 async def send_telemetry(data, client):
     await client.connect()
     try:
-        #payload = PAYLOAD.format(timestamp="2022-01-13T08:55:06.114Z", temperature=25, humidity=50, co2=700, station="61de29728c251a49e57635d3")
-        #message = Message(payload)
-        message = Message(data)
+        payload = PAYLOAD.format(timestamp="2022-01-13T08:55:06.114Z", temperature=25, humidity=50, co2=700, station="61de29728c251a49e57635d3")
+        message = Message(payload)
+        #message = Message(data)
         message.content_type = "application/json"
 
         if client.connected:
