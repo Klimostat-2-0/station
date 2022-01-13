@@ -63,6 +63,7 @@ def get_temperature_humidity():
     _humid, _temper = Adafruit_DHT.read_retry(DHTSensor, SENSE_PIN)
     return round(_humid, 2), round(_temper, 2)
 
+
 async def send_telemetry(data, client):
     await client.connect()
     try:
@@ -79,10 +80,10 @@ async def send_telemetry(data, client):
             await client.connect()
             await client.send_message(message)
 
-        await client.disconnect()
-
     except Exception as error:
-        print(error.args[0])
+        pass
+    finally:
+        await client.disconnect()
 
 
 def send_data(data):
