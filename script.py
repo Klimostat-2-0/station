@@ -17,7 +17,7 @@ URL = open(PATH + '.url', 'r').readline().strip()
 CONNECTION_STRING = open(PATH + '.conKey', 'r').readline().strip()
 # Create instance of the device client
 client = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
-PAYLOAD = '{{"timestamp": {timestamp}, "temperature": {temperature}, "humidity": {humidity}, "co2": {co2}, "station": {station}}}'
+PAYLOAD = '{{"timestamp": \"{timestamp}\", "temperature": \"{temperature}\", "humidity": \"{humidity}\", "co2": \"{co2}\", "station": \"{station}\"}}'
 
 LED_PIN_GR = 7
 LED_PIN_YE = 12
