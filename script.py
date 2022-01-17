@@ -140,8 +140,7 @@ def post_cache():
                 except json.decoder.JSONDecodeError:
                     write_to_log('Cache line could not be parsed: ' + jsonLine)
                     pass
-                finally:
-                    os.remove(PATH + 'cache.json')
+        os.remove(PATH + 'cache.json')
 
 
 def handle_co2_value(value):
